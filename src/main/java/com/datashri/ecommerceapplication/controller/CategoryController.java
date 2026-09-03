@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,22 +17,26 @@ public class CategoryController {
     private CategoryService categoryService;
 
     public CategoryController(CategoryService categoryService) {
+
         this.categoryService = categoryService;
     }
 
-    @GetMapping("/api/public/categories")
+   // @GetMapping("/api/public/categories")
+    @RequestMapping(value="/api/public/categories", method = RequestMethod.GET)
     public ResponseEntity<List<Category>> getAllCategories(){
         List<Category> categories = categoryService.getAllCategories();
         return new ResponseEntity<>(categories, HttpStatus.OK);
     }
 
-   @PostMapping("/api/public/categories")
+  // @PostMapping("/api/public/categories")
+   @RequestMapping(value = "/api/public/categories", method= RequestMethod.GET)
     public ResponseEntity<String> createCategory(@RequestBody Category category){
        categoryService.createCategory(category);
         return   new ResponseEntity<>( "Category created successfully", HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/api/admin/categories/{categoryId}")
+    //@DeleteMapping("/api/admin/categories/{categoryId}")
+    @RequestMapping(value="/api/admin/categories/{categoryId}", method = RequestMethod.DELETE)
     public ResponseEntity<String> deleteCategory(@PathVariable Long categoryId ){
           try {
               String status = categoryService.deleteCategory(categoryId);
@@ -41,7 +46,8 @@ public class CategoryController {
           }
     }
 
-    @PutMapping("/api/admin/categories/{categoryId}")
+   // @PutMapping("/api/admin/categories/{categoryId}")
+    @RequestMapping(value = "/api/admin/categories/{categoryId}", method=RequestMethod.PUT)
     public ResponseEntity<String> updateCategory(@RequestBody Category category,@PathVariable  Long categoryId){
         Category updatedCategory =categoryService.updateCategory(category,categoryId);
         return   new ResponseEntity<>( "Category updated successfully : "+updatedCategory.getCategoryName(), HttpStatus.CREATED);
