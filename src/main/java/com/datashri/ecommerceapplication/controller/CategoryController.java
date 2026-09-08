@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.validation.Valid;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +31,7 @@ public class CategoryController {
 
    @PostMapping("/api/public/categories")
  //  @RequestMapping(value = "/api/public/categories", method= RequestMethod.POST)
-    public ResponseEntity<String> createCategory(@RequestBody Category category){
+    public ResponseEntity<String> createCategory( @Valid @RequestBody Category category){
        categoryService.createCategory(category);
         return   new ResponseEntity<>( "Category created successfully", HttpStatus.CREATED);
     }
@@ -42,7 +43,7 @@ public class CategoryController {
               String status = categoryService.deleteCategory(categoryId);
               return  new ResponseEntity<>(status, HttpStatus.OK);
           }catch( ResponseStatusException e){
-              return new ResponseEntity<>(e.getReason(), e.getStatusCode());
+              return new ResponseEntity<>(e.getReason(), e.getStatus());
           }
     }
 
