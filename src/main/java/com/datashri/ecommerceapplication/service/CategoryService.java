@@ -6,7 +6,7 @@ import com.datashri.ecommerceapplication.model.Category;
 import java.util.List;
 
 public interface CategoryService {
-    List<Category> getAllCategories();
+    List<Category> getAllCategories() throws ApiException;
 
     void createCategory(Category category) throws ApiException;
 
