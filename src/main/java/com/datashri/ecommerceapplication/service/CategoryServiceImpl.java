@@ -1,5 +1,7 @@
 package com.datashri.ecommerceapplication.service;
 
+import com.datashri.ecommerceapplication.Exception.ApiException;
+import com.datashri.ecommerceapplication.Exception.ResponseStatusNOtFoundException;
 import com.datashri.ecommerceapplication.model.Category;
 import com.datashri.ecommerceapplication.repo.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +23,13 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public void createCategory(Category category) {
+    public void createCategory(Category category) throws ApiException {
+
+              Category  savedCategory =categoryRepository.findBycategoryName(category.getCategoryName());
+              if(savedCategory!=null){
+                  throw new ApiException("category by this name already present !!!!"+savedCategory.getCategoryId());
+              }
+
         categoryRepository.save(category);
     }
 
@@ -29,7 +37,7 @@ public class CategoryServiceImpl implements CategoryService {
     public String deleteCategory(Long categoryId) {
 
         Category category = categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new ResponseStatusException(
+                .orElseThrow(() -> new ResponseStatusNOtFoundException(
                         HttpStatus.NOT_FOUND,
                         "Category not found for id: " + categoryId
                 ));
@@ -43,9 +51,9 @@ public class CategoryServiceImpl implements CategoryService {
     public Category updateCategory(Category category, Long categoryId) {
 
         Category existingCategory = categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new ResponseStatusException(
+                .orElseThrow(() -> new ResponseStatusNOtFoundException(
                         HttpStatus.NOT_FOUND,
-                        "Category not found for id: " + categoryId
+                        "Category not found for id: "+ categoryId
                 ));
 
         existingCategory.setCategoryName(category.getCategoryName());

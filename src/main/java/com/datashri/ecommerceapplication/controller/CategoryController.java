@@ -1,5 +1,6 @@
 package com.datashri.ecommerceapplication.controller;
 
+import com.datashri.ecommerceapplication.Exception.ApiException;
 import com.datashri.ecommerceapplication.model.Category;
 import com.datashri.ecommerceapplication.service.CategoryService;
 import org.springframework.http.HttpStatus;
@@ -31,7 +32,7 @@ public class CategoryController {
 
    @PostMapping("/api/public/categories")
  //  @RequestMapping(value = "/api/public/categories", method= RequestMethod.POST)
-    public ResponseEntity<String> createCategory( @Valid @RequestBody Category category){
+    public ResponseEntity<String> createCategory( @Valid @RequestBody Category category) throws ApiException {
        categoryService.createCategory(category);
         return   new ResponseEntity<>( "Category created successfully", HttpStatus.CREATED);
     }
