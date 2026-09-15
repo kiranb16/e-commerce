@@ -1,16 +1,15 @@
 package com.datashri.ecommerceapplication.service;
 
 import com.datashri.ecommerceapplication.Exception.ApiException;
-import com.datashri.ecommerceapplication.model.Category;
-
-import java.util.List;
+import com.datashri.ecommerceapplication.dto.CategoryDto;
+import com.datashri.ecommerceapplication.dto.CategoryResponce;
 
 public interface CategoryService {
-    List<Category> getAllCategories() throws ApiException;
+    CategoryResponce getAllCategories() throws ApiException;
 
-    void createCategory(Category category) throws ApiException;
+    CategoryDto createCategory(CategoryDto categoryDto) throws ApiException;
 
-    String deleteCategory(Long categoryId);
+    CategoryDto deleteCategory(Long categoryId);
 
-    Category updateCategory(Category category, Long categoryId);
+    CategoryDto updateCategory(CategoryDto categoryDto, Long categoryId);
 }

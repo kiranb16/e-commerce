@@ -1,8 +1,10 @@
 package com.datashri.ecommerceapplication.dto;
 
-import java.util.List;
+import lombok.Data;
 
+import java.util.List;
+@Data
 public class CategoryResponce {
 
-    private List<CategoryDto> content;
+    private List<CategoryDto> categories;
 }
