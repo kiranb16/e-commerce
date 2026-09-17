@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@RequestMapping("/api")
 public class CategoryController {
 
     private CategoryService categoryService;
@@ -24,22 +25,27 @@ public class CategoryController {
 
         this.categoryService = categoryService;
     }
+     @GetMapping("/echo")
+     public ResponseEntity<String> ecchoMessage(@RequestParam(name ="message", required = false)   String message){
+  // public ResponseEntity<String> ecchoMessage(@RequestParam(name ="message", defaultValue = "Hello World") String message){
+        return  new ResponseEntity<>("eccho message :"+message, HttpStatus.OK);
+    }
 
-    @GetMapping("/api/public/categories")
+    @GetMapping("/public/categories")
   //  @RequestMapping(value="/api/public/categories", method = RequestMethod.GET)
     public ResponseEntity<CategoryResponce> getAllCategories() throws ApiException {
         CategoryResponce categories = categoryService.getAllCategories();
         return new ResponseEntity<>(categories, HttpStatus.OK);
     }
 
-   @PostMapping("/api/public/categories")
+   @PostMapping("/public/categories")
  //  @RequestMapping(value = "/api/public/categories", method= RequestMethod.POST)
     public ResponseEntity<String> createCategory( @Valid @RequestBody CategoryDto category) throws ApiException {
        categoryService.createCategory(category);
         return   new ResponseEntity<>( "Category created successfully", HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/api/admin/categories/{categoryId}")
+    @DeleteMapping("/admin/categories/{categoryId}")
     public ResponseEntity<CategoryDto> deleteCategory(
             @PathVariable Long categoryId) throws ApiException {
 
@@ -49,10 +55,10 @@ public class CategoryController {
         return new ResponseEntity<>(deletedCategory, HttpStatus.OK);
     }
 
-    @PutMapping("/api/admin/categories/{categoryId}")
+    @PutMapping("/admin/categories/{categoryId}")
     //@RequestMapping(value = "/api/admin/categories/{categoryId}", method=RequestMethod.PUT)
     public ResponseEntity<String> updateCategory(@Valid @RequestBody CategoryDto categoryDto,@PathVariable  Long categoryId){
-        Category updatedCategory =categoryService.updateCategory(categoryDto,categoryId);
-        return   new ResponseEntity<>( "Category updated successfully : "+updatedCategory.getCategoryName(), HttpStatus.CREATED);
+        CategoryDto updatedCategory =categoryService.updateCategory(categoryDto,categoryId);
+        return new ResponseEntity<>( "Category updated successfully : "+updatedCategory.getCategoryName(), HttpStatus.CREATED);
     }
 }
